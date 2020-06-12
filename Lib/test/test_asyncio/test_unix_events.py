@@ -234,6 +234,7 @@ class SelectorEventLoopSignalTests(test_utils.TestCase):
         m_signal.NSIG = signal.NSIG
         m_signal.valid_signals = signal.valid_signals
 
+        asyncio.set_event_loop(self.loop)
         self.loop.add_signal_handler(signal.SIGHUP, lambda: True)
         self.loop.add_signal_handler(signal.SIGCHLD, lambda: True)
 

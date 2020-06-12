@@ -1,0 +1,3 @@
+Removed the deprecated `loop` argument in :mod:`asyncio.locks`,
+:mod:`asyncio.queues`, :mod:`asyncio.subprocess` and :mod:`asyncio.tasks`.
+Patch contributed by Rémi Lapeyre.

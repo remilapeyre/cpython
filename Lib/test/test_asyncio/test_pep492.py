@@ -43,13 +43,13 @@ class BaseTest(test_utils.TestCase):
 class LockTests(BaseTest):
 
     def test_context_manager_async_with(self):
-        with self.assertWarns(DeprecationWarning):
-            primitives = [
-                asyncio.Lock(loop=self.loop),
-                asyncio.Condition(loop=self.loop),
-                asyncio.Semaphore(loop=self.loop),
-                asyncio.BoundedSemaphore(loop=self.loop),
-            ]
+        asyncio.set_event_loop(self.loop)
+        primitives = [
+            asyncio.Lock(),
+            asyncio.Condition(),
+            asyncio.Semaphore(),
+            asyncio.BoundedSemaphore(),
+        ]
 
         async def test(lock):
             await asyncio.sleep(0.01)
@@ -66,13 +66,13 @@ class LockTests(BaseTest):
             self.assertFalse(primitive.locked())
 
     def test_context_manager_with_await(self):
-        with self.assertWarns(DeprecationWarning):
-            primitives = [
-                asyncio.Lock(loop=self.loop),
-                asyncio.Condition(loop=self.loop),
-                asyncio.Semaphore(loop=self.loop),
-                asyncio.BoundedSemaphore(loop=self.loop),
-            ]
+        asyncio.set_event_loop(self.loop)
+        primitives = [
+            asyncio.Lock(),
+            asyncio.Condition(),
+            asyncio.Semaphore(),
+            asyncio.BoundedSemaphore(),
+        ]
 
         async def test(lock):
             await asyncio.sleep(0.01)
@@ -94,7 +94,8 @@ class StreamReaderTests(BaseTest):
     def test_readline(self):
         DATA = b'line1\nline2\nline3'
 
-        stream = asyncio.StreamReader(loop=self.loop)
+        asyncio.set_event_loop(self.loop)
+        stream = asyncio.StreamReader()
         stream.feed_data(DATA)
         stream.feed_eof()
 
@@ -192,7 +193,7 @@ class CoroutineTests(BaseTest):
 
         async def runner():
             nonlocal T
-            T = asyncio.ensure_future(foo(), loop=self.loop)
+            T = asyncio.ensure_future(foo())
             await T
 
         self.loop.run_until_complete(runner())

@@ -283,7 +283,7 @@ Creating Tasks
 Sleeping
 ========
 
-.. coroutinefunction:: sleep(delay, result=None, \*, loop=None)
+.. coroutinefunction:: sleep(delay, result=None)
 
    Block for *delay* seconds.
 
@@ -292,9 +292,6 @@ Sleeping
 
    ``sleep()`` always suspends the current task, allowing other tasks
    to run.
-
-   .. deprecated-removed:: 3.8 3.10
-      The *loop* parameter.
 
    .. _asyncio_example_sleep:
 
@@ -319,7 +316,7 @@ Sleeping
 Running Tasks Concurrently
 ==========================
 
-.. awaitablefunction:: gather(\*aws, loop=None, return_exceptions=False)
+.. awaitablefunction:: gather(\*aws, return_exceptions=False)
 
    Run :ref:`awaitable objects <asyncio-awaitables>` in the *aws*
    sequence *concurrently*.
@@ -347,9 +344,6 @@ Running Tasks Concurrently
    call is **not** cancelled in this case.  This is to prevent the
    cancellation of one submitted Task/Future to cause other
    Tasks/Futures to be cancelled.
-
-   .. deprecated-removed:: 3.8 3.10
-      The *loop* parameter.
 
    .. _asyncio_example_gather:
 
@@ -395,7 +389,7 @@ Running Tasks Concurrently
 Shielding From Cancellation
 ===========================
 
-.. awaitablefunction:: shield(aw, \*, loop=None)
+.. awaitablefunction:: shield(aw)
 
    Protect an :ref:`awaitable object <asyncio-awaitables>`
    from being :meth:`cancelled <Task.cancel>`.
@@ -428,14 +422,11 @@ Shielding From Cancellation
        except CancelledError:
            res = None
 
-   .. deprecated-removed:: 3.8 3.10
-      The *loop* parameter.
-
 
 Timeouts
 ========
 
-.. coroutinefunction:: wait_for(aw, timeout, \*, loop=None)
+.. coroutinefunction:: wait_for(aw, timeout)
 
    Wait for the *aw* :ref:`awaitable <asyncio-awaitables>`
    to complete with a timeout.
@@ -457,9 +448,6 @@ Timeouts
    happens during cancellation, it is propagated.
 
    If the wait is cancelled, the future *aw* is also cancelled.
-
-   .. deprecated-removed:: 3.8 3.10
-      The *loop* parameter.
 
    .. _asyncio_example_waitfor:
 
@@ -492,8 +480,7 @@ Timeouts
 Waiting Primitives
 ==================
 
-.. coroutinefunction:: wait(aws, \*, loop=None, timeout=None,\
-                            return_when=ALL_COMPLETED)
+.. coroutinefunction:: wait(aws, \*, timeout=None, return_when=ALL_COMPLETED)
 
    Run :ref:`awaitable objects <asyncio-awaitables>` in the *aws*
    set concurrently and block until the condition specified
@@ -545,10 +532,6 @@ Waiting Primitives
       ``wait()`` directly is deprecated as it leads to
       :ref:`confusing behavior <asyncio_example_wait_coroutine>`.
 
-   .. deprecated-removed:: 3.8 3.10
-
-      The *loop* parameter.
-
    .. _asyncio_example_wait_coroutine:
    .. note::
 
@@ -582,7 +565,7 @@ Waiting Primitives
       deprecated.
 
 
-.. function:: as_completed(aws, \*, loop=None, timeout=None)
+.. function:: as_completed(aws, \*, timeout=None)
 
    Run :ref:`awaitable objects <asyncio-awaitables>` in the *aws*
    set concurrently.  Return an iterator of coroutines.
@@ -591,9 +574,6 @@ Waiting Primitives
 
    Raises :exc:`asyncio.TimeoutError` if the timeout occurs before
    all Futures are done.
-
-   .. deprecated-removed:: 3.8 3.10
-      The *loop* parameter.
 
    Example::
 
@@ -735,7 +715,7 @@ Introspection
 Task Object
 ===========
 
-.. class:: Task(coro, \*, loop=None, name=None)
+.. class:: Task(coro, \*, name=None)
 
    A :class:`Future-like <Future>` object that runs a Python
    :ref:`coroutine <coroutine>`.  Not thread-safe.
@@ -779,9 +759,6 @@ Task Object
 
    .. versionchanged:: 3.8
       Added the ``name`` parameter.
-
-   .. deprecated-removed:: 3.8 3.10
-      The *loop* parameter.
 
    .. method:: cancel(msg=None)
 

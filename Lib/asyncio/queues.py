@@ -30,14 +30,8 @@ class Queue:
     interrupted between calling qsize() and doing an operation on the Queue.
     """
 
-    def __init__(self, maxsize=0, *, loop=None):
-        if loop is None:
-            self._loop = events.get_event_loop()
-        else:
-            self._loop = loop
-            warnings.warn("The loop argument is deprecated since Python 3.8, "
-                          "and scheduled for removal in Python 3.10.",
-                          DeprecationWarning, stacklevel=2)
+    def __init__(self, maxsize=0):
+        self._loop = events.get_event_loop()
         self._maxsize = maxsize
 
         # Futures.
@@ -45,7 +39,7 @@ class Queue:
         # Futures.
         self._putters = collections.deque()
         self._unfinished_tasks = 0
-        self._finished = locks.Event(loop=loop)
+        self._finished = locks.Event()
         self._finished.set()
         self._init(maxsize)
 

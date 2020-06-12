@@ -74,16 +74,10 @@ class Lock(_ContextManagerMixin):
 
     """
 
-    def __init__(self, *, loop=None):
+    def __init__(self):
         self._waiters = None
         self._locked = False
-        if loop is None:
-            self._loop = events.get_event_loop()
-        else:
-            self._loop = loop
-            warnings.warn("The loop argument is deprecated since Python 3.8, "
-                          "and scheduled for removal in Python 3.10.",
-                          DeprecationWarning, stacklevel=2)
+        self._loop = events.get_event_loop()
 
     def __repr__(self):
         res = super().__repr__()
@@ -170,16 +164,10 @@ class Event:
     false.
     """
 
-    def __init__(self, *, loop=None):
+    def __init__(self):
         self._waiters = collections.deque()
         self._value = False
-        if loop is None:
-            self._loop = events.get_event_loop()
-        else:
-            self._loop = loop
-            warnings.warn("The loop argument is deprecated since Python 3.8, "
-                          "and scheduled for removal in Python 3.10.",
-                          DeprecationWarning, stacklevel=2)
+        self._loop = events.get_event_loop()
 
     def __repr__(self):
         res = super().__repr__()
@@ -239,17 +227,11 @@ class Condition(_ContextManagerMixin):
     A new Lock object is created and used as the underlying lock.
     """
 
-    def __init__(self, lock=None, *, loop=None):
-        if loop is None:
-            self._loop = events.get_event_loop()
-        else:
-            self._loop = loop
-            warnings.warn("The loop argument is deprecated since Python 3.8, "
-                          "and scheduled for removal in Python 3.10.",
-                          DeprecationWarning, stacklevel=2)
+    def __init__(self, lock=None):
+        self._loop = events.get_event_loop()
 
         if lock is None:
-            lock = Lock(loop=loop)
+            lock = Lock()
         elif lock._loop is not self._loop:
             raise ValueError("loop argument must agree with lock")
 
@@ -366,18 +348,12 @@ class Semaphore(_ContextManagerMixin):
     ValueError is raised.
     """
 
-    def __init__(self, value=1, *, loop=None):
+    def __init__(self, value=1):
         if value < 0:
             raise ValueError("Semaphore initial value must be >= 0")
         self._value = value
         self._waiters = collections.deque()
-        if loop is None:
-            self._loop = events.get_event_loop()
-        else:
-            self._loop = loop
-            warnings.warn("The loop argument is deprecated since Python 3.8, "
-                          "and scheduled for removal in Python 3.10.",
-                          DeprecationWarning, stacklevel=2)
+        self._loop = events.get_event_loop()
 
     def __repr__(self):
         res = super().__repr__()
@@ -436,14 +412,9 @@ class BoundedSemaphore(Semaphore):
     above the initial value.
     """
 
-    def __init__(self, value=1, *, loop=None):
-        if loop:
-            warnings.warn("The loop argument is deprecated since Python 3.8, "
-                          "and scheduled for removal in Python 3.10.",
-                          DeprecationWarning, stacklevel=2)
-
+    def __init__(self, value=1):
         self._bound_value = value
-        super().__init__(value, loop=loop)
+        super().__init__(value)
 
     def release(self):
         if self._value >= self._bound_value:
